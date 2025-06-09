@@ -189,6 +189,13 @@ resource "aws_iam_role_policy" "ec2_s3_policy" {
           aws_s3_bucket.prodigy_storage.arn,
           "${aws_s3_bucket.prodigy_storage.arn}/*"
         ]
+      },
+      {
+        Effect = "Allow"
+        Action = [
+          "secretsmanager:GetSecretValue"
+        ]
+        Resource = "arn:aws:secretsmanager:${var.aws_region}:*:secret:prodigy/key-*"
       }
     ]
   })
@@ -208,7 +215,8 @@ resource "aws_instance" "prodigy_instance" {
   iam_instance_profile   = aws_iam_instance_profile.ec2_profile.name
 
   user_data = base64encode(templatefile("${path.module}/user-data.sh", {
-    s3_bucket = aws_s3_bucket.prodigy_storage.bucket
+    S3_BUCKET = aws_s3_bucket.prodigy_storage.bucket
+    AWS_DEFAULT_REGION = var.aws_region
   }))
 
   tags = {

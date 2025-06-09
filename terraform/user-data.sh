@@ -8,9 +8,12 @@ usermod -a -G docker ec2-user
 
 curl -L "https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
 chmod +x /usr/local/bin/docker-compose
+ln -sf /usr/local/bin/docker-compose /usr/bin/docker-compose
 
-export S3_BUCKET=${s3_bucket}
-echo "export S3_BUCKET=${s3_bucket}" >> /home/ec2-user/.bashrc
+export S3_BUCKET=${S3_BUCKET}
+export AWS_DEFAULT_REGION=${AWS_DEFAULT_REGION}
+echo "export S3_BUCKET=${S3_BUCKET}" >> /home/ec2-user/.bashrc
+echo "export AWS_DEFAULT_REGION=${AWS_DEFAULT_REGION}" >> /home/ec2-user/.bashrc
 
 mkdir -p /home/ec2-user/prodigy-app
 cd /home/ec2-user/prodigy-app

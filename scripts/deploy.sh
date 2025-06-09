@@ -5,6 +5,21 @@ set -e
 PROJECT_NAME=${1:-prodigy-app}
 SSH_KEY_PATH=${2:-~/.ssh/id_rsa.pub}
 
+# Check for AWS credentials
+if [ -f ~/.aws/credentials ]; then
+    echo "Using AWS credentials from ~/.aws/credentials"
+    export AWS_PROFILE=${AWS_PROFILE:-default}
+elif [ -f .env ]; then
+    echo "Using AWS credentials from .env file"
+    source .env
+    export AWS_ACCESS_KEY_ID
+    export AWS_SECRET_ACCESS_KEY
+    export AWS_REGION
+else
+    echo "No AWS credentials found. Please configure ~/.aws/credentials or create a .env file"
+    exit 1
+fi
+
 if [ ! -f "$SSH_KEY_PATH" ]; then
     echo "SSH public key not found at $SSH_KEY_PATH"
     echo "Please generate SSH keys or provide the correct path"
@@ -35,7 +50,7 @@ echo "Waiting for instance to be ready..."
 sleep 60
 
 echo "Copying application files to instance..."
-scp -o StrictHostKeyChecking=no -r ../app ../Dockerfile ../requirements.txt ../docker-compose.yml ec2-user@$INSTANCE_IP:~/prodigy-app/
+scp -o StrictHostKeyChecking=no -r ../app ../config ../Dockerfile ../requirements.txt ../docker-compose.yml ec2-user@$INSTANCE_IP:~/prodigy-app/
 
 echo "Building and starting application..."
 ssh -o StrictHostKeyChecking=no ec2-user@$INSTANCE_IP << 'EOF'
