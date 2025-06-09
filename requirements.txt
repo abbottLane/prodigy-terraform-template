@@ -1,0 +1,7 @@
+prodigy>=1.11.0
+spacy>=3.4.0
+boto3>=1.26.0
+gunicorn>=20.1.0
+python-dotenv>=0.19.0
+psycopg2-binary>=2.9.0
+redis>=4.3.0

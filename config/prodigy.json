@@ -1,0 +1,19 @@
+{
+  "host": "0.0.0.0",
+  "port": 8080,
+  "db": "sqlite",
+  "db_settings": {
+    "sqlite": {
+      "PRODIGY_DB": "/app/config/prodigy.db"
+    }
+  },
+  "custom_theme": {},
+  "batch_size": 10,
+  "port_auto": false,
+  "auto_exclude_current": true,
+  "instant_submit": false,
+  "feed_overlap": false,
+  "show_stats": true,
+  "show_flag": true,
+  "instructions": "config/instructions.html"
+}
