@@ -21,12 +21,16 @@ RUN PRODIGY_KEY=$(AWS_DEFAULT_REGION=$AWS_DEFAULT_REGION aws secretsmanager get-
 
 COPY app/ ./app/
 COPY config/ ./config/
+COPY data/ ./data/
+
+RUN mkdir -p /app/.prodigy
 
 ENV PYTHONPATH=/app
 ENV PORT=8080
 ENV PRODIGY_HOST=0.0.0.0
 ENV PRODIGY_PORT=8080
+ENV PRODIGY_HOME=/app/.prodigy
 
 EXPOSE 8080
 
-CMD ["python", "-m", "prodigy", "textcat.manual", "my_dataset", "-", "--label", "POSITIVE,NEGATIVE"]
+CMD ["python", "-m", "prodigy", "textcat.manual", "movie_reviews", "/app/data/sample_texts.jsonl", "--label", "POSITIVE,NEGATIVE,NEUTRAL"]

@@ -149,6 +149,49 @@ The deployment requires these AWS permissions:
    - Verify security group allows port 8080
    - Ensure Prodigy is configured to listen on 0.0.0.0
 
+## Exporting Annotations
+
+Once you've completed annotations, you can export them using Prodigy's built-in export commands.
+
+### From your local machine (recommended):
+
+**Export to JSONL format:**
+```bash
+ssh ec2-user@<instance-ip> "sudo docker exec prodigy-app-prodigy-1 python -m prodigy db-out movie_reviews > ~/annotations.jsonl"
+scp ec2-user@<instance-ip>:~/annotations.jsonl ./
+```
+
+**Export to CSV format:**
+```bash
+ssh ec2-user@<instance-ip> "sudo docker exec prodigy-app-prodigy-1 python -m prodigy db-out movie_reviews --format csv > ~/annotations.csv"
+scp ec2-user@<instance-ip>:~/annotations.csv ./
+```
+
+### From the EC2 instance:
+
+1. **SSH into your instance:**
+   ```bash
+   ssh ec2-user@<instance-ip>
+   ```
+
+2. **Export annotations:**
+   ```bash
+   # Export to JSONL (most common format)
+   sudo docker exec prodigy-app-prodigy-1 python -m prodigy db-out movie_reviews > annotations.jsonl
+   
+   # Export only accepted annotations
+   sudo docker exec prodigy-app-prodigy-1 python -m prodigy db-out movie_reviews --accepted > accepted_annotations.jsonl
+   
+   # View dataset statistics
+   sudo docker exec prodigy-app-prodigy-1 python -m prodigy stats movie_reviews
+   ```
+
+### Export Options:
+- `--accepted` - Only export accepted annotations
+- `--rejected` - Only export rejected annotations  
+- `--format csv` - Export as CSV instead of JSONL
+- `--format spacy` - Export in spaCy training format
+
 ## Costs
 
 Running costs depend on:

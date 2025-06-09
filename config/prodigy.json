@@ -2,11 +2,7 @@
   "host": "0.0.0.0",
   "port": 8080,
   "db": "sqlite",
-  "db_settings": {
-    "sqlite": {
-      "PRODIGY_DB": "/app/config/prodigy.db"
-    }
-  },
+  "db_name": "/app/.prodigy/prodigy.db",
   "custom_theme": {},
   "batch_size": 10,
   "port_auto": false,
